@@ -1,6 +1,8 @@
 public abstract class Board {
     private String columns = "abcdefgh";
     private BoardLocation board[][];
+    private int scoreWhite=2;
+    private int scoreBlack=2;
     public Board(){
         this.board=new BoardLocation[8][8]; // rows x columns
         initializeBoard();
@@ -42,4 +44,27 @@ public abstract class Board {
     }
 
     public abstract boolean makeMove(String position);
+
+    public abstract boolean makeMove(int[] position);
+
+    public void calculateScores(){
+        int scoreWhite = 0;
+        int scoreBlack = 0;
+        for(BoardLocation[] locationArray: this.board){
+            for(BoardLocation location: locationArray){
+                if(location.getPlayer()==1) scoreWhite++;
+                if(location.getPlayer()==2) scoreBlack++;
+            }
+            this.scoreBlack=scoreBlack;
+            this.scoreWhite=scoreWhite;
+        }
+    }
+
+    public int getScoreBlack() {
+        return scoreBlack;
+    }
+
+    public int getScoreWhite() {
+        return scoreWhite;
+    }
 }

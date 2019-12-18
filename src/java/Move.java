@@ -1,8 +1,6 @@
-import java.util.Arrays;
-
 public class Move extends Board{
     private String columns = "abcdefgh";
-    private int move[]=new int[2];
+    private int[] move=new int[2];
     private boolean whiteMove = true;
     private boolean[][] legalMoves = new boolean[8][8];
     public Move(){
@@ -11,18 +9,53 @@ public class Move extends Board{
 
     public boolean makeMove(String position){
         decodeMove(position);
-            if(!computeLegalMoves(whiteMove)){
-                return false;
-            }
-            else if(legalMoves[move[1]][move[0]]){
-                this.updatePosition(move[1],move[0],boolToPlayer(whiteMove));
-                conquerTerritory(boolToPlayer(whiteMove),move[1],move[0]);
-                whiteMove=!whiteMove;
-                return true;
-            }
-            System.out.println("This move is illegal! Try again");
+        if(!computeLegalMoves(whiteMove)){
+            System.out.println("No more moves left.");
+            return false;
+        }
+        else if(legalMoves[move[1]][move[0]]){
+            this.updatePosition(move[1],move[0],boolToPlayer(whiteMove));
+            this.getLocation(move[1],move[0]).setPlayer(boolToPlayer(whiteMove));
+            conquerTerritory(boolToPlayer(whiteMove),move[1],move[0]);
+            whiteMove=!whiteMove;
             return true;
         }
+        System.out.println("This move is illegal! Try again");
+        return true;
+    }
+
+    //TODO: Implement Game Over correctly
+    public boolean makeMove(int[] moveFromGUI){
+        this.move=moveFromGUI;
+        if(!computeLegalMoves(whiteMove)){
+            /*GameWrapper.board.removeMouseListener(GameWrapper.board.ma);
+            GameWrapper.setWhiteScoreTextText("GAME OVER");
+            GameWrapper.setWhiteScoreText("");
+            if(getScoreBlack()>getScoreWhite()) {
+                GameWrapper.setBlackScoreTextText("");
+                GameWrapper.setBlackScoreText("BLACKS WON");
+            }
+            if(getScoreWhite()>getScoreBlack()){
+                GameWrapper.setBlackScoreTextText("");
+                GameWrapper.setBlackScoreText("WHITES WON");
+            }
+            else{
+                GameWrapper.setBlackScoreTextText("");
+                GameWrapper.setBlackScoreText("DRAW");
+            }*/
+            return false;
+        }
+        else if(legalMoves[move[1]][move[0]]){
+            this.updatePosition(move[1],move[0],boolToPlayer(whiteMove));
+            this.getLocation(move[1],move[0]).setPlayer(boolToPlayer(whiteMove));
+            conquerTerritory(boolToPlayer(whiteMove),move[1],move[0]);
+            whiteMove=!whiteMove;
+            return true;
+        }
+        return true;
+    }
+
+
     private void decodeMove(String position){
         for(int i=0;i<this.columns.length();i++){
             if(position.charAt(0)==columns.charAt(i)){
