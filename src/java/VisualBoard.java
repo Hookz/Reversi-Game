@@ -5,6 +5,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 public class VisualBoard extends JPanel {
+    private boolean hints = false;
     public MouseListener ma;
     private Board gameBoard;
     public JPanel window;
@@ -25,9 +26,12 @@ public class VisualBoard extends JPanel {
                         if(boardFields[i][j].contains(e.getX(),e.getY())){
                             if(gameBoard.makeMove(new int[]{j,i})) {
                                 gameBoard.calculateScores();
+                                GameWrapper.setBlackScoreText(num(gameBoard.getScoreBlack()));
+                                GameWrapper.setWhiteScoreText(num(gameBoard.getScoreWhite()));
                                 repaint();
                             }
                             else{
+                                removeMouse(ma);
                                 return;
                             }
                         }
@@ -38,17 +42,26 @@ public class VisualBoard extends JPanel {
                 for(int i=0;i<gameBoard.getBoard().length;i++){
                     for(int j=0;j<gameBoard.getBoard()[i].length;j++){
                         if(boardFields[i][j].contains(e.getX(),e.getY())){
-                            gameBoard.makeMove(new int[]{j,i});
-                            gameBoard.calculateScores();
-                            GameWrapper.setBlackScoreText(num(gameBoard.getScoreBlack()));
-                            GameWrapper.setWhiteScoreText(num(gameBoard.getScoreWhite()));
-                            repaint();
+                            if(gameBoard.makeMove(new int[]{j,i})) {
+                                gameBoard.calculateScores();
+                                GameWrapper.setBlackScoreText(num(gameBoard.getScoreBlack()));
+                                GameWrapper.setWhiteScoreText(num(gameBoard.getScoreWhite()));
+                                repaint();
+                            }
+                            else{
+                                removeMouse(ma);
+                                return;
+                            }
                         }
                     }
                 }
             }
         };
         this.addMouseListener(ma);
+    }
+
+    public void removeMouse(MouseListener ml){
+        this.removeMouseListener(ml);
     }
 
     private void renderBoard(){
@@ -77,7 +90,14 @@ public class VisualBoard extends JPanel {
         for(int i=0;i<gameBoard.getBoard().length;i++){
             for(int j=0;j<gameBoard.getBoard()[i].length;j++){
                 boardFields[i][j] = new Rectangle2D.Double(i * size + 1, j * size + 1, size - 1, size - 1);
-                g2.fill(boardFields[i][j]);
+                if(gameBoard.getMoveAtLocation(i,j)&&hints){
+                    g2.setColor(new Color(21, 189, 66));
+                    g2.fill(boardFields[i][j]);
+                    g2.setColor(Color.LIGHT_GRAY);
+                }
+                else{
+                    g2.fill(boardFields[i][j]);
+                }
             }
         }
         for(int i=0;i<gameBoard.getBoard().length;i++){
@@ -104,5 +124,11 @@ public class VisualBoard extends JPanel {
 
     private static String num(int number){
         return Integer.toString(number);
+    }
+    public void setHints(boolean hints){
+        this.hints = hints;
+    }
+    public boolean getHints(){
+        return this.hints;
     }
 }

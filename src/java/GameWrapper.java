@@ -4,25 +4,9 @@ import java.awt.*;
 public class GameWrapper extends JPanel {
     public static VisualBoard board;
     public static JFrame window;
-    private static JLabel whiteScore;
-    private static JLabel blackScore;
-    private static JLabel whiteScoreText;
-    private static JLabel blackScoreText;
+    private static JPanel sidePanel;
     public GameWrapper(){
         float fontSize = 30.0f;
-        JPanel sidePanel = new JPanel(new GridLayout(4,1));
-        whiteScore = new JLabel(num(2),JLabel.CENTER);
-        whiteScore.setFont(whiteScore.getFont().deriveFont(fontSize));
-        blackScore = new JLabel(num(2),JLabel.CENTER);
-        blackScore.setFont(blackScore.getFont().deriveFont(fontSize));
-        whiteScoreText = new JLabel("White score",JLabel.CENTER);
-        whiteScoreText.setFont(whiteScoreText.getFont().deriveFont(fontSize));
-        blackScoreText = new JLabel("Black score",JLabel.CENTER);
-        blackScoreText.setFont(blackScoreText.getFont().deriveFont(fontSize));
-        sidePanel.add(whiteScoreText);
-        sidePanel.add(whiteScore);
-        sidePanel.add(blackScoreText);
-        sidePanel.add(blackScore);
         board = new VisualBoard();
         window = new JFrame("Reversi");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,6 +14,34 @@ public class GameWrapper extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         window.add(board,c);
         c.ipadx = 100;
+
+        sidePanel = new JPanel(new GridLayout(5,1));
+        JLabel whiteScore = new JLabel(num(2),JLabel.CENTER);
+        whiteScore.setFont(whiteScore.getFont().deriveFont(fontSize));
+        JLabel blackScore = new JLabel(num(2),JLabel.CENTER);
+        blackScore.setFont(blackScore.getFont().deriveFont(fontSize));
+        JLabel whiteScoreText = new JLabel("White score",JLabel.CENTER);
+        whiteScoreText.setFont(whiteScoreText.getFont().deriveFont(fontSize));
+        JLabel blackScoreText = new JLabel("Black score",JLabel.CENTER);
+        blackScoreText.setFont(blackScoreText.getFont().deriveFont(fontSize));
+        whiteScoreText.setVisible(true);
+        JButton hints = new JButton("Turn on hints");
+        hints.addActionListener(e -> {
+            board.setHints(!board.getHints());
+            if(board.getHints()){
+                hints.setText("Turn off hints");
+            }
+            else{
+                hints.setText("Turn on hints");
+            }
+            board.repaint();
+        });
+        sidePanel.add(whiteScoreText);
+        sidePanel.add(whiteScore);
+        sidePanel.add(blackScoreText);
+        sidePanel.add(blackScore);
+        sidePanel.add(hints);
+
         window.add(sidePanel,c);
         window.pack();
         window.setResizable(false);
@@ -41,17 +53,32 @@ public class GameWrapper extends JPanel {
     }
 
     public static void setWhiteScoreText(String whiteScore) {
-        GameWrapper.whiteScore.setText(whiteScore);
+        JLabel wS = (JLabel) sidePanel.getComponent(1);
+        wS.setText(whiteScore);
+    }
+
+    public static String getWhiteScoreText() {
+        JLabel wS = (JLabel) sidePanel.getComponent(1);
+        return wS.getText();
     }
 
     public static void setBlackScoreText(String blackScore) {
-        GameWrapper.blackScore.setText(blackScore);
+        JLabel bS = (JLabel) sidePanel.getComponent(3);
+        bS.setText(blackScore);
     }
+
+    public static String getBlackScoreText() {
+        JLabel bS = (JLabel) sidePanel.getComponent(3);
+        return bS.getText();
+    }
+
     public static void setWhiteScoreTextText(String whiteScoreText){
-        GameWrapper.whiteScoreText.setText(whiteScoreText);
+        JLabel wST = (JLabel) sidePanel.getComponent(0);
+        wST.setText(whiteScoreText);
     }
     public static void setBlackScoreTextText(String blackScoreText){
-        GameWrapper.blackScoreText.setText(blackScoreText);
+        JLabel bST = (JLabel) sidePanel.getComponent(2);
+        bST.setText(blackScoreText);
 
     }
 }

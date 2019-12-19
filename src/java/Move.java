@@ -28,21 +28,21 @@ public class Move extends Board{
     public boolean makeMove(int[] moveFromGUI){
         this.move=moveFromGUI;
         if(!computeLegalMoves(whiteMove)){
-            /*GameWrapper.board.removeMouseListener(GameWrapper.board.ma);
-            GameWrapper.setWhiteScoreTextText("GAME OVER");
-            GameWrapper.setWhiteScoreText("");
+            GameWrapper.board.removeMouse(GameWrapper.board.ma);
             if(getScoreBlack()>getScoreWhite()) {
                 GameWrapper.setBlackScoreTextText("");
-                GameWrapper.setBlackScoreText("BLACKS WON");
+                GameWrapper.setBlackScoreText("BLACKS WON "+GameWrapper.getBlackScoreText()+" : "+GameWrapper.getWhiteScoreText());
             }
             if(getScoreWhite()>getScoreBlack()){
                 GameWrapper.setBlackScoreTextText("");
-                GameWrapper.setBlackScoreText("WHITES WON");
+                GameWrapper.setBlackScoreText("WHITES WON "+GameWrapper.getWhiteScoreText()+" : "+GameWrapper.getBlackScoreText());
             }
             else{
                 GameWrapper.setBlackScoreTextText("");
                 GameWrapper.setBlackScoreText("DRAW");
-            }*/
+            }
+            GameWrapper.setWhiteScoreTextText("GAME OVER");
+            GameWrapper.setWhiteScoreText("");
             return false;
         }
         else if(legalMoves[move[1]][move[0]]){
@@ -142,7 +142,7 @@ public class Move extends Board{
             return false;
         if(this.getPieceAtLocation(row+dRow,column+dColumn)==conqueror)
             return true;
-        if(conquerLine(conqueror,dRow,dColumn,row+dRow,column+dColumn)){
+        if(conquerLine(conqueror,dRow,dColumn,row+dRow,column+dColumn)&&getPieceAtLocation(row+dRow,column+dColumn)!=0){
             this.updatePosition(row+dRow,column+dColumn,conqueror);
             return true;
         }
@@ -152,5 +152,9 @@ public class Move extends Board{
     private int boolToPlayer(boolean whitePlayer){
         if(whitePlayer) return 1;
         else return 2;
+    }
+
+    public boolean getMoveAtLocation(int row, int column){
+        return legalMoves[row][column];
     }
 }

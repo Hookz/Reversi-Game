@@ -47,6 +47,7 @@ public abstract class Board {
 
     public abstract boolean makeMove(int[] position);
 
+    public abstract boolean getMoveAtLocation(int row, int column);
     public void calculateScores(){
         int scoreWhite = 0;
         int scoreBlack = 0;
