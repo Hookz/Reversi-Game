@@ -14,7 +14,7 @@ public class GameWrapper extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         window.add(board,c);
         c.ipadx = 100;
-
+        c.insets = new Insets(0,60,0,60);
         sidePanel = new JPanel(new GridLayout(5,1));
         JLabel whiteScore = new JLabel(num(2),JLabel.CENTER);
         whiteScore.setFont(whiteScore.getFont().deriveFont(fontSize));
@@ -25,14 +25,16 @@ public class GameWrapper extends JPanel {
         JLabel blackScoreText = new JLabel("Black score",JLabel.CENTER);
         blackScoreText.setFont(blackScoreText.getFont().deriveFont(fontSize));
         whiteScoreText.setVisible(true);
-        JButton hints = new JButton("Turn on hints");
+        JButton hints = new JButton("<html>HINTS: <strong style='color:RED;'>OFF</strong></html>");
+        hints.setMargin(new Insets(20,0,20,0));
+        hints.setFont(hints.getFont().deriveFont(fontSize/2));
         hints.addActionListener(e -> {
             board.setHints(!board.getHints());
             if(board.getHints()){
-                hints.setText("Turn off hints");
+                hints.setText("<html>HINTS: <strong style='color:GREEN;'>ON</strong></html>");
             }
             else{
-                hints.setText("Turn on hints");
+                hints.setText("<html>HINTS: <strong style='color:RED;'>OFF</strong></html>");
             }
             board.repaint();
         });
@@ -79,6 +81,8 @@ public class GameWrapper extends JPanel {
     public static void setBlackScoreTextText(String blackScoreText){
         JLabel bST = (JLabel) sidePanel.getComponent(2);
         bST.setText(blackScoreText);
-
+    }
+    public static void gameOver(){
+        board.gameOver();
     }
 }

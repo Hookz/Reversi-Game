@@ -1,8 +1,13 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class VisualBoard extends JPanel {
     private boolean hints = false;
@@ -108,6 +113,24 @@ public class VisualBoard extends JPanel {
         }
     }
 
+    public void gameOver(){
+        // Does not work with JAR files
+        /*
+        try
+        {
+            boolean saveHints = hints;
+            hints = false;
+            BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+            File file = new File(getClass().getResource("/img/gameStateAtOver.png").getPath());
+            Graphics2D graphics2D = image.createGraphics();
+            paint(graphics2D);
+            ImageIO.write(image,"png", file);
+            hints = saveHints;
+        } catch(IOException exception)
+        {
+            System.out.println("Could not generate image");
+        }*/
+    }
     private Color getPlayerColor (int player){
         if(player==1) return Color.WHITE;
         if(player==2) return Color.BLACK;

@@ -29,20 +29,7 @@ public class Move extends Board{
         this.move=moveFromGUI;
         if(!computeLegalMoves(whiteMove)){
             GameWrapper.board.removeMouse(GameWrapper.board.ma);
-            if(getScoreBlack()>getScoreWhite()) {
-                GameWrapper.setBlackScoreTextText("");
-                GameWrapper.setBlackScoreText("BLACKS WON "+GameWrapper.getBlackScoreText()+" : "+GameWrapper.getWhiteScoreText());
-            }
-            if(getScoreWhite()>getScoreBlack()){
-                GameWrapper.setBlackScoreTextText("");
-                GameWrapper.setBlackScoreText("WHITES WON "+GameWrapper.getWhiteScoreText()+" : "+GameWrapper.getBlackScoreText());
-            }
-            else{
-                GameWrapper.setBlackScoreTextText("");
-                GameWrapper.setBlackScoreText("DRAW");
-            }
-            GameWrapper.setWhiteScoreTextText("GAME OVER");
-            GameWrapper.setWhiteScoreText("");
+            gameOver();
             return false;
         }
         else if(legalMoves[move[1]][move[0]]){
@@ -154,6 +141,24 @@ public class Move extends Board{
         else return 2;
     }
 
+    private void gameOver(){
+        calculateScores();
+        if(getScoreBlack()>getScoreWhite()) {
+            GameWrapper.setBlackScoreTextText("");
+            GameWrapper.setBlackScoreText("BLACKS WON "+GameWrapper.getBlackScoreText()+" : "+GameWrapper.getWhiteScoreText());
+        }
+        else if(getScoreWhite()>getScoreBlack()){
+            GameWrapper.setBlackScoreTextText("");
+            GameWrapper.setBlackScoreText("WHITES WON "+GameWrapper.getWhiteScoreText()+" : "+GameWrapper.getBlackScoreText());
+        }
+        else{
+            GameWrapper.setBlackScoreTextText("");
+            GameWrapper.setBlackScoreText("DRAW");
+        }
+        GameWrapper.setWhiteScoreTextText("GAME OVER");
+        GameWrapper.setWhiteScoreText("");
+        GameWrapper.gameOver();
+    }
     public boolean getMoveAtLocation(int row, int column){
         return legalMoves[row][column];
     }
